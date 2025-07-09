@@ -8,10 +8,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "puppeteer": "^21.3.8"
-  },
-  "puppeteer": {
-    "args": ["--no-sandbox"],
-    "executablePath": "/usr/bin/google-chrome"
+    "puppeteer-core": "^21.3.8",
+    "chrome-aws-lambda": "^10.1.0"
   }
 }
