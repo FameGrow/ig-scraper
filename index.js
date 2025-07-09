@@ -1,9 +1,7 @@
 const express = require('express');
+const puppeteer = require('puppeteer');
 const app = express();
 const PORT = process.env.PORT || 5040;
-
-const chrome = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
 
 app.get('/profile', async (req, res) => {
   const username = req.query.username;
@@ -11,9 +9,8 @@ app.get('/profile', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      args: chrome.args,
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless,
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
@@ -33,6 +30,7 @@ app.get('/profile', async (req, res) => {
     });
 
     await browser.close();
+
     if (!data.image) return res.json({ success: false, message: 'Profile image not found' });
 
     res.json({ success: true, username, ...data });
