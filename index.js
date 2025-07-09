@@ -1,6 +1,6 @@
 const express = require('express');
 const puppeteer = require('puppeteer-core');
-const chromium = require('chrome-aws-lambda');
+const chrome = require('chrome-aws-lambda');
 
 const app = express();
 const PORT = process.env.PORT || 5040;
@@ -9,12 +9,13 @@ app.get('/profile', async (req, res) => {
   const username = req.query.username;
   if (!username) return res.status(400).json({ success: false, message: "Missing username" });
 
+  let browser = null;
+
   try {
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
+    browser = await puppeteer.launch({
+      args: chrome.args,
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless
     });
 
     const page = await browser.newPage();
@@ -34,16 +35,16 @@ app.get('/profile', async (req, res) => {
       };
     });
 
-    await browser.close();
-
     if (!data.image) {
       return res.json({ success: false, message: "Profile image not found" });
     }
 
     res.json({ success: true, username, ...data });
   } catch (err) {
-    console.error(err);
+    console.error("Scraper error:", err);
     res.status(500).json({ success: false, message: "Scraper error" });
+  } finally {
+    if (browser) await browser.close();
   }
 });
 
