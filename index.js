@@ -1,5 +1,7 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('chrome-aws-lambda');
+
 const app = express();
 const PORT = process.env.PORT || 5040;
 
@@ -8,7 +10,13 @@ app.get('/profile', async (req, res) => {
   if (!username) return res.status(400).json({ success: false, message: "Missing username" });
 
   try {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+    });
+
     const page = await browser.newPage();
 
     await page.goto(`https://www.instagram.com/${username}/`, {
