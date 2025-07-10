@@ -15,7 +15,8 @@ app.get('/scrape', async (req, res) => {
     });
     const page = await browser.newPage();
 
-    await page.goto(`https://www.instagram.com/${username}/`, { waitUntil: 'networkidle2' });
+    await page.goto('https://www.google.com', { waitUntil: 'networkidle2' });
+
 
     await page.waitForSelector('script[type="application/ld+json"]');
     const jsonLD = await page.$eval('script[type="application/ld+json"]', el => el.innerText);
