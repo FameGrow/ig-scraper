@@ -4,6 +4,7 @@
   "description": "Simple Instagram profile scraper using Puppeteer",
   "main": "index.js",
   "scripts": {
+    "install": "PUPPETEER_PRODUCT=chrome npm install",
     "start": "node index.js"
   },
   "dependencies": {
