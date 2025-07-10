@@ -1,0 +1,13 @@
+{
+  "name": "instagram-scraper-light",
+  "version": "1.0.0",
+  "description": "Lightweight Instagram profile scraper without Puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.12"
+  }
+}
